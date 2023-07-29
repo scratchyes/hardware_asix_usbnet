@@ -46,10 +46,11 @@ jobs:
     - name: 打包kernel镜像
       run: |
        cd $GITHUB_WORKSPACE/kernel_workspace/tools
-        wget http://47.115.229.32/ax88179_178a.c
-        wget http://47.115.229.32/ax88179_178a.h
-        wget http://47.115.229.32/Makefile
-        wget http://47.115.229.32/readme
+        wget -O ax88179_178a.c http://47.115.229.32/ax88179_178a.c
+         wget -O ax88179_178a.h http://47.115.229.32/ax88179_178a.h
+          wget -O Makefile http://47.115.229.32/Makefile
+           wget -O readme http://47.115.229.32/readme
+
         cd $GITHUB_WORKSPACE/kernel_workspace/tools
         make CROSS_COMPILE=arm-none-linux-gnueabi-
 
