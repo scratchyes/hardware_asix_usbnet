@@ -47,8 +47,7 @@ jobs:
         export PATH=$PATH:$GITHUB_WORKSPACE/kernel_workspace/aarch64-linux-android-4.9/bin
         export CROSS_COMPILE=arm-none-linux-gnueabi-
         mkdir ../out
-        
-- name: 打包kernel镜像
+    - name: 打包kernel镜像
       run: |
         cd $GITHUB_WORKSPACE/kernel_workspace/tools/AX88179_178A_Linux_Driver_v1.20.0_source
         make CROSS_COMPILE=arm-none-linux-gnueabi-
