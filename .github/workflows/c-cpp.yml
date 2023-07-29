@@ -51,7 +51,7 @@ jobs:
 - name: 打包kernel镜像
       run: |
         cd $GITHUB_WORKSPACE/kernel_workspace/tools/AX88179_178A_Linux_Driver_v1.20.0_source
-         make CROSS_COMPILE=arm-none-linux-gnueabi-
+        make CROSS_COMPILE=arm-none-linux-gnueabi-
         make
 
     - name: 上传kernel镜像
