@@ -42,8 +42,7 @@ jobs:
         export PATH=$PATH:$GITHUB_WORKSPACE/kernel_workspace/aarch64-linux-android-4.9/bin
         export CROSS_COMPILE=arm-none-linux-gnueabi-
         mkdir ../out
-        make ARCH=arm64 
-        make 
+        make CROSS_COMPILE=arm-none-linux-gnueabi-
 
 
     - name: 上传kernel镜像
