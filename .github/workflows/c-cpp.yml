@@ -27,11 +27,7 @@ jobs:
       run: |
         cd $GITHUB_WORKSPACE/kernel_workspace
         git clone https://github.com/FireflyTeam/gcc-linaro-6.3.1-2017.05-x86_64_aarch64-linux-gnu.git aarch64-linux-android-4.9 
-        cd $GITHUB_WORKSPACE/kernel_workspace/tools
-        wget http://47.115.229.32/ax88179_178a.c
-        wget http://47.115.229.32/ax88179_178a.h
-        wget http://47.115.229.32/Makefile
-        wget http://47.115.229.32/readme
+       
 
     - name: 设置缓存
       uses: hendrikmuhs/ccache-action@v1.2
@@ -49,6 +45,11 @@ jobs:
         
     - name: 打包kernel镜像
       run: |
+       cd $GITHUB_WORKSPACE/kernel_workspace/tools
+        wget http://47.115.229.32/ax88179_178a.c
+        wget http://47.115.229.32/ax88179_178a.h
+        wget http://47.115.229.32/Makefile
+        wget http://47.115.229.32/readme
         cd $GITHUB_WORKSPACE/kernel_workspace/tools
         make CROSS_COMPILE=arm-none-linux-gnueabi-
 
