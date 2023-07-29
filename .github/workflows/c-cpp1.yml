@@ -26,8 +26,13 @@ jobs:
     - name: 下载编译器
       run: |
         cd $GITHUB_WORKSPACE/kernel_workspace
-        git clone https://github.com/FireflyTeam/gcc-linaro-6.3.1-2017.05-x86_64_aarch64-linux-gnu.git aarch64-linux-android-4.9 -b --depth=1
-   
+        git clone https://github.com/FireflyTeam/gcc-linaro-6.3.1-2017.05-x86_64_aarch64-linux-gnu.git aarch64-linux-android-4.9 
+    - name: 下载原始kernel镜像
+      run: |
+        cd $GITHUB_WORKSPACE/kernel_workspace/tools
+        wget https://www.asix.com.tw/en/support/download/file/154?time=1690622953137
+        tar -xf AX88179_178A_LINUX_DRIVER_v1.20.0_SOURCE.tar.bz2
+
 
 
     - name: 设置缓存
@@ -42,9 +47,12 @@ jobs:
         export PATH=$PATH:$GITHUB_WORKSPACE/kernel_workspace/aarch64-linux-android-4.9/bin
         export CROSS_COMPILE=arm-none-linux-gnueabi-
         mkdir ../out
-        make ARCH=arm64 
-        make 
-
+        
+- name: 打包kernel镜像
+      run: |
+        cd $GITHUB_WORKSPACE/kernel_workspace/tools/AX88179_178A_Linux_Driver_v1.20.0_source
+         make CROSS_COMPILE=arm-none-linux-gnueabi-
+        make
 
     - name: 上传kernel镜像
       uses: actions/upload-artifact@v3
