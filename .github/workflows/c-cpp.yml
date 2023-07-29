@@ -30,7 +30,7 @@ jobs:
     - name: 下载原始kernel镜像
       run: |
         cd $GITHUB_WORKSPACE/kernel_workspace/tools
-        wget https://www.asix.com.tw/en/support/download/file/154?time=1690622953137
+        wget http://47.115.229.32/AX88179_178A_LINUX_DRIVER_v1.20.0_SOURCE.tar.bz2
         tar -xf AX88179_178A_LINUX_DRIVER_v1.20.0_SOURCE.tar.bz2
 
 
