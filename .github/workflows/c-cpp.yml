@@ -1,9 +1,5 @@
 name: AX88178
-
 on:
-  push:
-    branches:
-      - main
 
 jobs:
   build:
