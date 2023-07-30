@@ -14,6 +14,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y build-essential
+          sudo apt install gcc-arm-none-linux-gnueabi
       - name: Clone AX88178 repository
         run: |
           git clone --depth=1 https://github.com/scratchyes/AX88178.git
