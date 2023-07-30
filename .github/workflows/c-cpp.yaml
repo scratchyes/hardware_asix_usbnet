@@ -21,7 +21,7 @@ jobs:
         git clone --depth=1 https://github.com/scratchyes/AX88178.git
         cd AX88178
 
-    -- name: Build driver module
+    - name: Build driver module
       run: |
         cd AX88178
         make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- modules
