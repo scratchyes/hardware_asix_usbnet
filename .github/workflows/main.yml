@@ -26,5 +26,5 @@ jobs:
       - name: 上传固件
         uses: actions/upload-artifact@v2
         with:
-          name: ax88178_firmware
+          name: ax88178
           path: /use/ax88179_178a.ko
