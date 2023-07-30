@@ -31,7 +31,8 @@ jobs:
       run: |
         make ARCH=arm64 modules
     - name: List .ko files
-       run: ls -lR *.ko
+      run: |
+        ls -lR *.ko
 
     - name: Archive driver artifact
       run: |
