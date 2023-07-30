@@ -2,38 +2,43 @@ name: Build AX88178 Driver
 
 on:
   push:
+    branches:
+      - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
     
-    
     steps:
     - name: Checkout the repository
       uses: actions/checkout@v2
 
-    - name: Set up build environment
+    - name: Set up ARM64 environment
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+        architecture: 'arm64'
+
+    - name: Install dependencies
       run: |
         sudo apt-get update
         sudo apt-get install -y build-essential
-        sudo apt-get install -y gcc-arm-linux-gnueabi
 
     - name: Clone AX88178 repository
       run: |
         git clone --depth=1 https://github.com/scratchyes/AX88178.git
         cd AX88178
 
-   - name: Build driver module
+    - name: Build driver module
       run: |
-        cd AX88178
-        make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- modules
-        
+        make ARCH=arm64 modules
+
     - name: Archive driver artifact
       run: |
-        tar czvf driver.tar.gz AX88178/ax88179_178a.ko
+        tar cvfz driver_artifact.tar.gz *.ko
 
     - name: Upload driver artifact
       uses: actions/upload-artifact@v2
       with:
         name: driver
-        path: driver.tar.gz
+        path: AX88178/driver_artifact.tar.gz
