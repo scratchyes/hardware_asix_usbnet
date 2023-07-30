@@ -1,0 +1,30 @@
+name: 编译 AX88178 固件
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v2
+
+      - name: 配置环境
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential gcc-arm-linux-gnueabihf
+          cd /
+          git clone https://github.com/scratchyes/AX88178.git use
+
+      - name: 编译固件
+        run: make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- -C /use
+
+      - name: 上传固件
+        uses: actions/upload-artifact@v2
+        with:
+          name: ax88178_firmware
+          path: /use
