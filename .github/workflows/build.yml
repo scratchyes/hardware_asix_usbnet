@@ -31,6 +31,8 @@ jobs:
           
           ls
           pwd
+          ls -l /home/runner/work/hardware_asix_usbnet/hardware_asix_usbnet/ufiwifi-linux-header
+
 
       - name: Compile AX88178 driver
         run: |
