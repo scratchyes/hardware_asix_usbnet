@@ -2,9 +2,6 @@ name: Build AX88178 Driver
 
 on:
   push:
-    branches:
-      - main
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -23,16 +20,21 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y build-essential
-        sudo apt-get install -y gcc-aarch64-linux-gnu
+        sudo apt-get install -y gcc
 
     - name: Clone AX88178 repository
       run: |
         git clone --depth=1 https://github.com/scratchyes/AX88178.git
         cd AX88178
 
+    - name: Apply patch for MSM8916
+      run: |
+        wget https://example.com/msm8916.patch
+        patch -p1 < msm8916.patch
+
     - name: Build driver module
       run: |
-        make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- modules
+        make ARCH=arm64 modules
 
     - name: Archive driver artifact
       run: |
