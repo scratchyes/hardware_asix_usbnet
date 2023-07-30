@@ -27,7 +27,7 @@ jobs:
         sudo apt install build-essential
     - name: Clone AX88178 repository
       run: |
-          git clone --depth=1 https://github.com/scratchyes/AX88178.git
+          git clone --depth=1 https://github.com/scratchyes/AX88178.git AX88178
 
     - name: Compile AX88178 driver
       run: |
