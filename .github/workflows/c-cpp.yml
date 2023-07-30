@@ -1,14 +1,10 @@
 name: Build AX88178 Driver
-
-on:
-  push:
-    branches:
-      - main
+on: [workflow_dispatch]
 
 jobs:
   build:
+    name: Build AX88178 Driver by ${{ github.actor }}
     runs-on: ubuntu-latest
-    
     steps:
     - name: Checkout the repository
       uses: actions/checkout@v2
