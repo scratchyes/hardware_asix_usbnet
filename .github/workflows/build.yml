@@ -30,12 +30,12 @@ jobs:
           
           
           ls
-          find / -name ufiwifi-liunx-header
+
 
       - name: Compile AX88178 driver
         run: |
           cd AX88178
-          make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- KDIR=./ufiwifi-linux-header
+          make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- KDIR=../ufiwifi-linux-header
           ls
       - name: Copy compiled driver
         run: |
