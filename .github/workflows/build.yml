@@ -2,8 +2,7 @@ name: Build AX88178 driver
 
 on:
   push:
-    branches:
-      - main
+
 
 jobs:
   build:
@@ -36,7 +35,7 @@ jobs:
         run: |
           cd AX88178
           make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- KDIR=./ufiwifi-liunx-header
-
+          ls
       - name: Copy compiled driver
         run: |
           cp ax88179_178a.ko /path/to/destination
