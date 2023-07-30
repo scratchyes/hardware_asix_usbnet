@@ -1,10 +1,14 @@
 name: Build AX88178 Driver
-on: [workflow_dispatch]
+
+on:
+  push:
+    branches:
+      - main
 
 jobs:
   build:
-    name: Build AX88178 Driver by ${{ github.actor }}
     runs-on: ubuntu-latest
+    
     steps:
     - name: Checkout the repository
       uses: actions/checkout@v2
@@ -19,13 +23,12 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y build-essential
- 
     
     - name: Clone GCC repository
       run: |
-
         git clone https://github.com/FireflyTeam/gcc-linaro-6.3.1-2017.05-x86_64_aarch64-linux-gnu.git gcc-repo
         git clone https://github.com/scratchyes/AX88178.git driver_directory
+
     - name: Configure and build GCC
       run: |
         cd gcc-repo
