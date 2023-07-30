@@ -44,3 +44,52 @@ jobs:
       with:
         name: ax88178-driver
         path: ${{ github.workspace }}/ax88179_178a.ko
+        
+        
+        name: Build AX88178 driver
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v2
+
+      - name: Set up ARM64 cross-compilation environment
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+          platform: 'ubuntu-latest'
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential
+          sudo apt-get install -y gcc-aarch64-linux-gnu
+       - name: Clone AX88178 repository
+      run: |
+          git clone --depth=1 https://github.com/scratchyes/AX88178.git AX88178
+          git clone --depth=1 https://github.com/scratchyes/ufiwifi-liunx-header.git ufiwifi-liunx-header
+          
+          cd /usr/src
+          ls
+
+      - name: Compile AX88178 driver
+        run: |
+          cd AX88178
+          make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- KDIR=./ufiwifi-liunx-header
+
+      - name: Copy compiled driver
+        run: |
+          cp ax88179_178a.ko /path/to/destination
+          - name: Upload driver as artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: ax88178-driver
+          path: ax88179_178a.ko
