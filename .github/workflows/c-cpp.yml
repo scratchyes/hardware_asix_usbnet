@@ -19,16 +19,16 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y build-essential
-        mkdir -p $GITHUB_WORKSPACE/kernel_workspace
+ 
     
     - name: Clone GCC repository
       run: |
-        cd $GITHUB_WORKSPACE/kernel_workspace
+
         git clone https://github.com/FireflyTeam/gcc-linaro-6.3.1-2017.05-x86_64_aarch64-linux-gnu.git gcc-repo
         git clone https://github.com/scratchyes/AX88178.git driver_directory
     - name: Configure and build GCC
       run: |
-        cd $GITHUB_WORKSPACE/kernel_workspace/gcc-repo
+        cd gcc-repo
         ./contrib/download_prerequisites
         ./configure --target=arm-linux-gnueabihf --prefix=/usr/local/gcc
         make -j$(nproc)
@@ -36,13 +36,13 @@ jobs:
 
     - name: Build driver module
       run: |
-       cd $GITHUB_WORKSPACE/kernel_workspace
+     
         cd driver_directory # 将 "driver_directory" 替换为你的驱动代码目录
         make ARCH=arm64 CROSS_COMPILE=/usr/local/gcc/bin/arm-linux-gnueabihf- modules
 
     - name: Archive driver artifact
       run: |
-       cd $GITHUB_WORKSPACE/kernel_workspace
+
         cd driver_directory # 将 "driver_directory" 替换为你的驱动代码目录
         tar cvfz driver_artifact.tar.gz *.ko
 
@@ -50,4 +50,4 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: driver
-        path: $GITHUB_WORKSPACE/kernel_workspace/driver_directory/driver_artifact.tar.gz # 将 "driver_directory" 替换为你的驱动代码目录
+        path: driver_directory/driver_artifact.tar.gz # 将 "driver_directory" 替换为你的驱动代码目录
