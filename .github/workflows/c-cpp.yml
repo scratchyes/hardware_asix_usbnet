@@ -1,55 +1,30 @@
-name: Build Kernel With KernelSU
-on: [workflow_dispatch]
+name: AX88178
+
+on:
+  push:
+    branches:
+      - main
 
 jobs:
   build:
-    name: Build Kernel With KernelSU
     runs-on: ubuntu-latest
-    env:
-      CCACHE_COMPILERCHECK: "%compiler% -dumpmachine; %compiler% -dumpversion"
-      CCACHE_NOHASHDIR: "true"
-      CCACHE_HARDLINK: "true"
+
     steps:
-    - uses: actions/checkout@v3
-    - name: 配置构编译环境
-      run: |
-        sudo apt update
-        sudo apt install git ccache automake flex lzop bison gperf build-essential zip curl zlib1g-dev g++-multilib libxml2-utils bzip2 libbz2-dev libbz2-1.0 libghc-bzlib-dev squashfs-tools pngcrush schedtool dpkg-dev liblz4-tool make optipng maven libssl-dev pwgen libswitch-perl policycoreutils minicom libxml-sax-base-perl libxml-simple-perl bc libc6-dev-i386 lib32ncurses5-dev libx11-dev lib32z-dev libgl1-mesa-dev xsltproc unzip device-tree-compiler python2 python3
-        mkdir -p $GITHUB_WORKSPACE/kernel_workspace
+      - name: 检出代码
+        uses: actions/checkout@v2
 
-    - name: 切换make版本
-      run: |
-        cd $GITHUB_WORKSPACE/kernel_workspace
-        sudo apt-get update
-        sudo apt-get install make
+      - name: 配置环境
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential gcc-arm-linux-gnueabihf
+          cd /
+          git clone https://github.com/scratchyes/AX88178.git use
 
-    - name: 下载编译器
-      run: |
-        cd $GITHUB_WORKSPACE/kernel_workspace
-        git clone https://github.com/FireflyTeam/gcc-linaro-6.3.1-2017.05-x86_64_aarch64-linux-gnu.git aarch64-linux-android-4.9 
-        git clone https://github.com/scratchyes/AX88178.git tools
+      - name: 编译固件
+        run: make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- -C /use
 
-    - name: 设置缓存
-      uses: hendrikmuhs/ccache-action@v1.2
-      with:
-        key: build-kernel-cache
-        max-size: 2G
-
-    - name: 编译内核
-      run: |
-        cd $GITHUB_WORKSPACE/kernel_workspace/android-kernel
-        export PATH=$PATH:$GITHUB_WORKSPACE/kernel_workspace/aarch64-linux-android-4.9/bin
-
-       
-        
-    - name: 打包kernel镜像
-      run: |
-
-        cd $GITHUB_WORKSPACE/kernel_workspace/tools
-        make CROSS_COMPILE=arm-none-linux-gnueabi-
-
-    - name: 上传kernel镜像
-      uses: actions/upload-artifact@v3
-      with:
-        name: kernel
-        path: kernel_workspace/tools/ax88179_178a.ko
+      - name: 上传固件
+        uses: actions/upload-artifact@v2
+        with:
+          name: ax88178
+          path: /use/ax88179_178a.ko
