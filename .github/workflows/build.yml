@@ -18,11 +18,10 @@ jobs:
         run: |
           git clone --depth=1 https://github.com/scratchyes/AX88178.git
           
- 
       - name: Compile AX88178 Driver
         run: |
           cd AX88178
-         make CROSS_COMPILE=arm-none-linux-gnueabi-
+          make CROSS_COMPILE=arm-none-linux-gnueabi-
           ls
 
       - name: Capture Compiled File
