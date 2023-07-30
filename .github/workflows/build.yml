@@ -30,6 +30,7 @@ jobs:
           
           
           ls
+          find / -name ufiwifi-liunx-header
 
       - name: Compile AX88178 driver
         run: |
