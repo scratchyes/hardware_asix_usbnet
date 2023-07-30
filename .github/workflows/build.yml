@@ -30,11 +30,12 @@ jobs:
           
           
           ls
-
+          pwd
 
       - name: Compile AX88178 driver
         run: |
           cd AX88178
+          pwd
           make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- KDIR=../ufiwifi-linux-header
           ls
       - name: Copy compiled driver
