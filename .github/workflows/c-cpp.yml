@@ -16,7 +16,9 @@ jobs:
           sudo mkdir -p /use
           cd /
           sudo git clone https://github.com/scratchyes/AX88178.git use
-
+          cd /use
+          sudo git clone https://github.com/FireflyTeam/gcc-linaro-6.3.1-2017.05-x86_64_aarch64-linux-gnu.git gcc
+          sudo export PATH=$PATH:/use/gcc/bin
       - name: 编译固件
         run: sudo make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- -C /use
 
