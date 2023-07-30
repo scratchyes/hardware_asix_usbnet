@@ -23,6 +23,7 @@ jobs:
       run: |
         sudo apt update
         sudo apt install build-essential
+        sudo apt install linux-headers-$(uname -r)
     - name: Clone AX88178 repository
       run: |
           git clone --depth=1 https://github.com/scratchyes/AX88178.git AX88178
@@ -30,8 +31,10 @@ jobs:
     - name: Compile AX88178 driver
       run: |
         cd AX88178
+        ls 
         make clean
         make -C /lib/modules/$(uname -r)/build M=$PWD modules
+        ls
 
     - name: Copy module to output directory
       run: cp AX88178/ax88179_178a.ko ${{ github.workspace }}/ax88179_178a.ko
