@@ -1,4 +1,4 @@
-name: Build AX88178 Driver
+name: AX88178 Driver
 
 on:
   push:
