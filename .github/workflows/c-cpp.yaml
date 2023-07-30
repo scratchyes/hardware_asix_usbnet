@@ -24,7 +24,7 @@ jobs:
     
     - name: Clone GCC repository
       run: |
-        git clone https://github.com/FireflyTeam/gcc-linaro-6.3.1-2017.05-x86_64_aarch64-linux-gnu.git gcc-repo
+        git clone https://github.com/gcc-mirror/gcc.git gcc-repo
         git clone https://github.com/scratchyes/AX88178.git driver_directory
 
     - name: Configure and build GCC
