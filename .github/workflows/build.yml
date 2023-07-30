@@ -1,36 +1,38 @@
-name: Build Kernel
-on: [workflow_dispatch]
+name: Build AX88178 Driver
+
+on:
+  push:
 
 jobs:
   build:
-    name: Build Kernel by ${{ github.actor }}
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        platform: [arm64]
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
+    - name: Checkout repository
+      uses: actions/checkout@v2
 
-      - name: Install Dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y build-essential
-          sudo apt install gcc-arm-none-linux-gnueabi
-      - name: Clone AX88178 repository
-        run: |
+    - name: Install dependencies
+      run: |
+        sudo apt update
+        sudo apt install build-essential
+
+    - name: Compile AX88178 driver
+      run: |
+        cd AX88178
+        make clean
+        make -C /lib/modules/$(uname -r)/build M=$PWD modules
+    - name: Clone AX88178 repository
+      run: |
           git clone --depth=1 https://github.com/scratchyes/AX88178.git
           
-      - name: Compile AX88178 Driver
-        run: |
-          cd AX88178
-          make CROSS_COMPILE=arm-none-linux-gnueabi-
-          ls
+    - name: Copy module to output directory
+      run: cp AX88178/ax88179_178a.ko ${{ github.workspace }}/ax88179_178a.ko
 
-      - name: Capture Compiled File
-        run: |
-          cp AX88178/ax88179_178a.ko ${{ github.workspace }}/ax88179_178a.ko
-
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: ax88179_178a.ko
-          path: ${{ github.workspace }}/ax88179_178a.ko
+    - name: Upload module artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: ax88178-driver
+        path: ${{ github.workspace }}/ax88179_178a.ko
