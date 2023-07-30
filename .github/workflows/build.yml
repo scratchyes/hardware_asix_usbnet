@@ -2,8 +2,7 @@ name: Build AX88178 driver
 
 on:
   push:
-    branches:
-      - main
+
 
 jobs:
   build:
