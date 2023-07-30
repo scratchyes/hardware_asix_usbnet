@@ -11,42 +11,38 @@ jobs:
     - name: Checkout the repository
       uses: actions/checkout@v2
 
-    - name: Set up ARM64 environment
+    - name: Set up Node.js environment
       uses: actions/setup-node@v2
       with:
-        node-version: '14'
-        architecture: 'arm64'
+        node-version: '16'
 
     - name: Install dependencies
       run: |
         sudo apt-get update
         sudo apt-get install -y build-essential
-    
-    - name: Clone GCC repository
-      run: |
-        git clone https://github.com/gcc-mirror/gcc.git gcc-repo
-        git clone https://github.com/scratchyes/hardware_asix_usbnet.git driver_directory
+        sudo apt-get install -y gcc
 
-    - name: Configure and build GCC
+    - name: Clone AX88178 repository
       run: |
-        cd gcc-repo
-        ./contrib/download_prerequisites
-        ./configure --target=arm-linux-gnueabihf --prefix=/usr/local/gcc
-        make -j$(nproc)
-        sudo make install
+        git clone --depth=1 https://github.com/scratchyes/AX88178.git
+        cd AX88178
+
+    - name: Apply patch for MSM8916
+      run: |
+        wget https://example.com/msm8916.patch
+        patch -p1 < msm8916.patch
 
     - name: Build driver module
       run: |
-        cd driver_directory # 将 "driver_directory" 替换为你的驱动代码目录
-        make ARCH=arm64 CROSS_COMPILE=/usr/local/gcc/bin/arm-linux-gnueabihf- modules
+        make ARCH=arm64 modules
 
     - name: Archive driver artifact
       run: |
-        cd driver_directory # 将 "driver_directory" 替换为你的驱动代码目录
         tar cvfz driver_artifact.tar.gz *.ko
 
     - name: Upload driver artifact
       uses: actions/upload-artifact@v2
       with:
         name: driver
-        path: driver_directory/driver_artifact.tar.gz # 将 "driver_directory" 替换为你的驱动代码目录
+        path: AX88178/driver_artifact.tar.gz
+
