@@ -37,11 +37,12 @@ jobs:
 
     - name: 编译内核
       run: |
-        cd $GITHUB_WORKSPACE/kernel_workspace/android-kernel
+         cd $GITHUB_WORKSPACE/kernel_workspace/android-kernel
         export PATH=$PATH:$GITHUB_WORKSPACE/kernel_workspace/aarch64-linux-android-4.9/bin
         export CROSS_COMPILE=arm-none-linux-gnueabi-
-        make CROSS_COMPILE=arm-none-linux-gnueabi-
-        make
+        mkdir ../out
+        make ARCH=arm64 O=../out merge_hi6250_defconfig
+        make ARCH=arm64 O=../out -j$(nproc --all)
         
     - name: 打包kernel镜像
       run: |
