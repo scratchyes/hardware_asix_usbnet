@@ -1,0 +1,43 @@
+name: Build AX88178 Driver
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout the repository
+      uses: actions/checkout@v2
+
+    - name: Set up ARM64 environment
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+        architecture: 'arm64'
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y build-essential
+        sudo apt-get install -y gcc-aarch64-linux-gnu
+        git clone https://github.com/scratchyes/AX88178.git driver_directory
+
+    - name: Build driver module
+      run: |
+        cd driver_directory # 将 "driver_directory" 替换为你的驱动代码目录
+        make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- modules
+
+    - name: Archive driver artifact
+      run: |
+        cd driver_directory # 将 "driver_directory" 替换为你的驱动代码目录
+        tar cvfz driver_artifact.tar.gz *.ko
+
+    - name: Upload driver artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: driver
+        path: driver_directory/driver_artifact.tar.gz # 将 "driver_directory" 替换为你的驱动代码目录
