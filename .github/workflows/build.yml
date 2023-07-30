@@ -23,21 +23,17 @@ jobs:
         git clone --depth=1 https://github.com/scratchyes/AX88178.git
         cd AX88178
 
-    - name: Apply patch for MSM8916
+   - name: Build driver module
       run: |
-        wget https://example.com/msm8916.patch
-        patch -p1 < msm8916.patch
-
-    - name: Build driver module
-      run: |
-        make ARCH=arm64 modules
-
+        cd AX88178
+        make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- modules
+        
     - name: Archive driver artifact
       run: |
-        tar cvfz driver_artifact.tar.gz *.ko
+        tar czvf driver.tar.gz AX88178/ax88179_178a.ko
 
     - name: Upload driver artifact
       uses: actions/upload-artifact@v2
       with:
         name: driver
-        path: AX88178/driver_artifact.tar.gz
+        path: driver.tar.gz
