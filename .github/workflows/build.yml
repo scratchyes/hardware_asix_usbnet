@@ -22,7 +22,7 @@ jobs:
       - name: Clone AX88178 repository
         run: |
           git clone --depth=1 https://github.com/scratchyes/AX88178.git
-          cd AX88178
+          
  
       - name: Compile AX88178 Driver
         run: |
