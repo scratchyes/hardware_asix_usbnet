@@ -28,8 +28,7 @@ jobs:
         git clone https://github.com/scratchyes/AX88178.git driver_directory
     - name: Configure and build GCC
       run: |
-        cd $GITHUB_WORKSPACE/kernel_workspace
-        cd gcc-repo
+        cd $GITHUB_WORKSPACE/kernel_workspace/gcc-repo
         ./contrib/download_prerequisites
         ./configure --target=arm-linux-gnueabihf --prefix=/usr/local/gcc
         make -j$(nproc)
