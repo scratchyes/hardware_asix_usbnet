@@ -36,7 +36,7 @@ jobs:
         run: |
           cd AX88178
           pwd
-          make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- KDIR=../ufiwifi-linux-header
+          make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- KDIR=/home/runner/work/hardware_asix_usbnet/hardware_asix_usbnet/ufiwifi-linux-header
           ls
       - name: Copy compiled driver
         run: |
