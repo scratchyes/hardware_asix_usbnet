@@ -29,7 +29,7 @@ jobs:
 
     - name: Build driver module
       run: |
-        make ARCH=arm64 modules
+        sudo make CROSS_COMPILE=arm-none-linux-gnueabi-
     - name: List .ko files
       run: |
         ls -lR *.ko
