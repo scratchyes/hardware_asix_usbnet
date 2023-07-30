@@ -23,6 +23,7 @@ jobs:
         run: |
           cd AX88178
           make ARCH=arm64 CROSS_COMPILE=arm-none-linux-gnueabi- modules
+          ls
 
       - name: Capture Compiled File
         run: |
