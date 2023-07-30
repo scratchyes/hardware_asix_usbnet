@@ -1,29 +1,58 @@
-name: Build Kernel
-on: [workflow_dispatch]
+name: Build AX88178 Driver
+
+on:
+  push:
+    branches:
+      - main
 
 jobs:
   build:
-    name: Build Kernel by ${{ github.actor }}
     runs-on: ubuntu-latest
+    
     steps:
-      - name: 检出代码
-        uses: actions/checkout@v2
+    - name: Checkout the repository
+      uses: actions/checkout@v2
 
-      - name: 配置环境
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y build-essential gcc-arm-linux-gnueabihf
-          sudo mkdir -p /use
-          cd /
-          sudo git clone https://github.com/scratchyes/AX88178.git use
-          cd /use
-          sudo git clone https://github.com/FireflyTeam/gcc-linaro-6.3.1-2017.05-x86_64_aarch64-linux-gnu.git gcc
-          sudo export PATH=$PATH:/use/gcc/bin
-      - name: 编译固件
-        run: sudo make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- -C /use
+    - name: Set up ARM64 environment
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+        architecture: 'arm64'
 
-      - name: 上传固件
-        uses: actions/upload-artifact@v2
-        with:
-          name: ax88178
-          path: /use/ax88179_178a.ko
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y build-essential
+        mkdir -p $GITHUB_WORKSPACE/kernel_workspace
+    
+    - name: Clone GCC repository
+      run: |
+        cd $GITHUB_WORKSPACE/kernel_workspace
+        git clone https://github.com/FireflyTeam/gcc-linaro-6.3.1-2017.05-x86_64_aarch64-linux-gnu.git gcc-repo
+        git clone https://github.com/scratchyes/AX88178.git driver_directory
+    - name: Configure and build GCC
+      run: |
+        cd $GITHUB_WORKSPACE/kernel_workspace
+        cd gcc-repo
+        ./contrib/download_prerequisites
+        ./configure --target=arm-linux-gnueabihf --prefix=/usr/local/gcc
+        make -j$(nproc)
+        sudo make install
+
+    - name: Build driver module
+      run: |
+       cd $GITHUB_WORKSPACE/kernel_workspace
+        cd driver_directory # 将 "driver_directory" 替换为你的驱动代码目录
+        make ARCH=arm64 CROSS_COMPILE=/usr/local/gcc/bin/arm-linux-gnueabihf- modules
+
+    - name: Archive driver artifact
+      run: |
+       cd $GITHUB_WORKSPACE/kernel_workspace
+        cd driver_directory # 将 "driver_directory" 替换为你的驱动代码目录
+        tar cvfz driver_artifact.tar.gz *.ko
+
+    - name: Upload driver artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: driver
+        path: $GITHUB_WORKSPACE/kernel_workspace/driver_directory/driver_artifact.tar.gz # 将 "driver_directory" 替换为你的驱动代码目录
