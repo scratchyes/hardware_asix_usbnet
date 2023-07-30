@@ -22,7 +22,7 @@ jobs:
       - name: Compile AX88178 Driver
         run: |
           cd AX88178
-          make ARCH=arm64 CROSS_COMPILE=arm-none-linux-gnueabi- modules
+         make CROSS_COMPILE=arm-none-linux-gnueabi-
           ls
 
       - name: Capture Compiled File
