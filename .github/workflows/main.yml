@@ -27,4 +27,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: ax88178_firmware
-          path: /use
+          path: /use/ax88179_178a.ko
