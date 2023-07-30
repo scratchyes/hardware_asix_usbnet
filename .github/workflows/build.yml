@@ -2,7 +2,8 @@ name: Build AX88178 driver
 
 on:
   push:
-
+    branches:
+      - main
 
 jobs:
   build:
@@ -28,19 +29,20 @@ jobs:
           git clone --depth=1 https://github.com/scratchyes/AX88178.git AX88178
           git clone --depth=1 https://github.com/scratchyes/ufiwifi-liunx-header.git ufiwifi-liunx-header
           
-          cd /usr/src
+          
           ls
 
       - name: Compile AX88178 driver
         run: |
           cd AX88178
-          make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- KDIR=./ufiwifi-liunx-header
+          make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- KDIR=./ufiwifi-linux-header
           ls
       - name: Copy compiled driver
         run: |
-          cp ax88179_178a.ko /path/to/destination
-          - name: Upload driver as artifact
+          cp AX88178/ax88179_178a.ko ${{ github.workspace }}/ax88179_178a.ko
+
+      - name: Upload driver as artifact
         uses: actions/upload-artifact@v2
         with:
           name: ax88178-driver
-          path: ax88179_178a.ko
+          path: ${{ github.workspace }}/ax88179_178a.ko
