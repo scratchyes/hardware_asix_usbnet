@@ -1,14 +1,9 @@
-name: Build AX88178 Driver
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+name: Build Kernel
+on: [workflow_dispatch]
 
 jobs:
   build:
+    name: Build Kernel by ${{ github.actor }}
     runs-on: ubuntu-latest
 
     steps:
