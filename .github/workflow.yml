@@ -1,9 +1,7 @@
-name: Build AX88178 Driver
+name: Build AX88178a Driver
 
 on:
   push:
-    branches:
-      - main
 
 jobs:
   build:
