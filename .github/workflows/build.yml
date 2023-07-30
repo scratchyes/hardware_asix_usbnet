@@ -24,8 +24,8 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y build-essential
           sudo apt-get install -y gcc-aarch64-linux-gnu
-       - name: Clone AX88178 repository
-      run: |
+      - name: Clone AX88178 repository
+        run: |
           git clone --depth=1 https://github.com/scratchyes/AX88178.git AX88178
           git clone --depth=1 https://github.com/scratchyes/ufiwifi-liunx-header.git ufiwifi-liunx-header
           
